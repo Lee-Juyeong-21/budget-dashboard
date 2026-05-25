@@ -83,8 +83,11 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:var
 .page{display:none}.page.active{display:block}
 
 /* ── Insight strip ── */
-.insight-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px}
-.ins-card{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rad);overflow:hidden;cursor:default}
+.insight-strip{margin-bottom:22px}
+.ins-cards-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ins-card{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rad);overflow:hidden;cursor:pointer;transition:border-color .15s}
+.ins-card:hover{border-color:var(--pri-l)}
+.ins-card.selected{border-color:var(--pri);border-width:1.5px}
 .ins-head{display:flex;align-items:center;gap:8px;padding:12px 14px 8px}
 .ins-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .dot-green{background:var(--up)}
@@ -94,17 +97,19 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:var
 .type-green{color:var(--up)}
 .type-amber{color:var(--am)}
 .type-blue{color:var(--pri)}
-.ins-body-top{padding:0 14px 10px}
-.ins-title{font-size:12px;font-weight:600;color:var(--t1);line-height:1.4;margin-bottom:3px}
+.ins-body-top{padding:0 14px 14px}
+.ins-title{font-size:12px;font-weight:600;color:var(--t1);line-height:1.4;margin-bottom:4px}
 .ins-num{font-size:11px;font-weight:500;color:var(--pri)}
-/* toggle row — fixed height so all cards align */
-.ins-toggle{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;border-top:1px solid var(--bdr);background:var(--sur2);cursor:pointer;user-select:none}
-.ins-toggle-label{font-size:10px;color:var(--t3)}
-.ins-toggle i{font-size:13px;color:var(--t3);transition:transform .2s;flex-shrink:0}
-.ins-toggle.open i{transform:rotate(180deg)}
-.ins-detail{padding:10px 14px;border-top:1px solid var(--bdr);font-size:11px;color:var(--t2);line-height:1.6;display:none}
-.ins-detail.open{display:block}
-.ins-action{margin-top:7px;padding:6px 8px;background:var(--sur2);border-left:2px solid var(--pri);font-size:10px;color:var(--t2);line-height:1.5}
+.ins-detail-panel{background:var(--sur);border:1.5px solid var(--pri);border-radius:var(--rad);padding:16px 18px;margin-top:10px;display:none}
+.ins-detail-panel.open{display:block;animation:fadeSlide .18s ease}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.ins-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.ins-panel-title{font-size:13px;font-weight:700;color:var(--t1);display:flex;align-items:center;gap:7px}
+.ins-panel-close{background:none;border:none;cursor:pointer;color:var(--t3);font-size:18px;line-height:1;transition:color .12s}
+.ins-panel-close:hover{color:var(--t1)}
+.ins-panel-num{font-size:12px;font-weight:500;color:var(--pri);margin-bottom:10px}
+.ins-panel-detail{font-size:12px;color:var(--t2);line-height:1.7}
+.ins-panel-action{margin-top:10px;padding:8px 10px;background:var(--pri-xl);border-left:2px solid var(--pri);font-size:11px;color:var(--pri-d);line-height:1.6}
 
 /* ── KPI grid ── */
 .kpi-grid{display:grid;gap:12px;margin-bottom:22px}
@@ -179,6 +184,22 @@ tbody tr:hover td{background:var(--sur2)}
 .upload-sub{font-size:12px;color:var(--t2)}
 .upload-btn{display:inline-block;margin-top:14px;padding:9px 22px;background:var(--pri);color:#fff;border-radius:var(--rad-s);font-size:13px;font-weight:600;cursor:pointer;border:none;transition:background .12s}
 .upload-btn:hover{background:var(--pri-d)}
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center}
+.modal-backdrop.open{display:flex}
+.modal{background:var(--sur);border-radius:var(--rad);padding:28px 28px 22px;width:100%;max-width:400px;margin:0 16px}
+.modal-icon{width:44px;height:44px;border-radius:50%;background:var(--pri-xl);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.modal-icon i{font-size:22px;color:var(--pri)}
+.modal-title{font-size:15px;font-weight:700;color:var(--t1);margin-bottom:5px}
+.modal-sub{font-size:12px;color:var(--t2);margin-bottom:16px}
+.modal-file{display:flex;align-items:center;gap:10px;background:var(--sur3);border:1px solid var(--bdr);border-radius:var(--rad-s);padding:11px 13px;margin-bottom:22px}
+.modal-file i{font-size:20px;color:var(--pri);flex-shrink:0}
+.modal-file-name{font-size:13px;font-weight:600;color:var(--t1);word-break:break-all;line-height:1.4}
+.modal-file-size{font-size:11px;color:var(--t3);margin-top:3px}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end}
+.modal-btn-cancel{padding:8px 18px;font-size:13px;font-weight:500;border:1px solid var(--bdr);border-radius:var(--rad-s);background:transparent;color:var(--t2);cursor:pointer;transition:all .12s}
+.modal-btn-cancel:hover{background:var(--sur3)}
+.modal-btn-ok{padding:8px 20px;font-size:13px;font-weight:600;border:none;border-radius:var(--rad-s);background:var(--pri);color:#fff;cursor:pointer;transition:background .12s}
+.modal-btn-ok:hover{background:var(--pri-d)}
 .err-box{background:var(--dn-bg);border:1px solid #FECACA;border-radius:var(--rad-s);padding:12px 14px;margin-bottom:14px;display:none}
 .err-title{font-size:12px;font-weight:600;color:var(--dn);margin-bottom:5px;display:flex;align-items:center;gap:5px}
 .err-list{list-style:none;font-size:11px;color:#B91C1C;line-height:1.9}
@@ -193,7 +214,7 @@ tbody tr:hover td{background:var(--sur2)}
 @media(max-width:1100px){
   .kpi-grid-5{grid-template-columns:repeat(3,1fr)}
   .charts-row-2{grid-template-columns:1fr}
-  .insight-strip{grid-template-columns:1fr}
+  .ins-cards-row{grid-template-columns:1fr}
 }
 @media(max-width:768px){
   .sidebar{transform:translateX(-100%)}
@@ -210,7 +231,7 @@ tbody tr:hover td{background:var(--sur2)}
 @media(max-width:480px){
   .kpi-grid-5,.kpi-grid-3{grid-template-columns:1fr 1fr}
   .kpi-val{font-size:20px}
-  .insight-strip{grid-template-columns:1fr}
+  .ins-cards-row{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -290,7 +311,21 @@ tbody tr:hover td{background:var(--sur2)}
 
     <!-- ═══ SUMMARY ═══ -->
     <div class="page active" id="page-summary">
-      <div class="insight-strip" id="insightStrip"></div>
+      <div class="insight-strip" id="insightStrip">
+        <div class="ins-cards-row" id="insCardsRow"></div>
+        <div class="ins-detail-panel" id="insDetailPanel">
+          <div class="ins-panel-header">
+            <div class="ins-panel-title">
+              <div class="ins-dot" id="panelDot"></div>
+              <span id="panelTitle"></span>
+            </div>
+            <button class="ins-panel-close" onclick="closeInsPanel()" aria-label="닫기"><i class="ti ti-x" aria-hidden="true"></i></button>
+          </div>
+          <div class="ins-panel-num" id="panelNum"></div>
+          <div class="ins-panel-detail" id="panelDetail"></div>
+          <div class="ins-panel-action" id="panelAction"></div>
+        </div>
+      </div>
       <div class="kpi-grid kpi-grid-5" id="summaryKpi"></div>
       <div class="charts-row charts-row-2">
         <div class="card">
@@ -573,31 +608,45 @@ const INSIGHTS={
   ]
 };
 
+let curInsIdx=null;
 function renderInsights(){
   const ins=INSIGHTS[curY]||INSIGHTS[2024];
-  document.getElementById('insightStrip').innerHTML=ins.map((c,i)=>`
-    <div class="ins-card">
+  closeInsPanel();
+  const row=document.getElementById('insCardsRow');
+  row.innerHTML='';
+  ins.forEach((c,i)=>{
+    const card=document.createElement('div');
+    card.className='ins-card';
+    card.id='insCard'+i;
+    card.dataset.idx=i;
+    card.innerHTML=`
       <div class="ins-head"><div class="ins-dot ${c.dot}"></div><div class="ins-type ${c.type}">${c.typeLabel}</div></div>
       <div class="ins-body-top">
         <div class="ins-title">${c.title}</div>
         <div class="ins-num">${c.num}</div>
-      </div>
-      <div class="ins-toggle" id="itog${i}" onclick="toggleIns(${i})">
-        <span class="ins-toggle-label">상세 보기</span>
-        <i class="ti ti-chevron-down" aria-hidden="true"></i>
-      </div>
-      <div class="ins-detail" id="idet${i}">
-        ${c.detail}
-        <div class="ins-action">${c.action}</div>
-      </div>
-    </div>`).join('');
+      </div>`;
+    card.addEventListener('click',()=>openInsPanel(i));
+    row.appendChild(card);
+  });
 }
-function toggleIns(i){
-  const tog=document.getElementById('itog'+i),det=document.getElementById('idet'+i);
-  const open=det.classList.contains('open');
-  det.classList.toggle('open',!open);
-  tog.classList.toggle('open',!open);
-  tog.querySelector('.ins-toggle-label').textContent=open?'상세 보기':'접기';
+function openInsPanel(i){
+  const ins=INSIGHTS[curY]||INSIGHTS[2024];
+  const c=ins[i];
+  if(!c)return;
+  if(curInsIdx===i){closeInsPanel();return;}
+  curInsIdx=i;
+  document.querySelectorAll('.ins-card').forEach((el,idx)=>el.classList.toggle('selected',idx===i));
+  document.getElementById('panelDot').className='ins-dot '+c.dot;
+  document.getElementById('panelTitle').textContent=c.title;
+  document.getElementById('panelNum').textContent=c.num;
+  document.getElementById('panelDetail').textContent=c.detail;
+  document.getElementById('panelAction').textContent=c.action;
+  document.getElementById('insDetailPanel').classList.add('open');
+}
+function closeInsPanel(){
+  curInsIdx=null;
+  document.querySelectorAll('.ins-card').forEach(el=>el.classList.remove('selected'));
+  document.getElementById('insDetailPanel').classList.remove('open');
 }
 
 /* ════════════════════ KPI ════════════════════ */
@@ -812,13 +861,32 @@ function renderDetail(){
 /* ════════════════════ UPLOAD ════════════════════ */
 const REQ_SHEETS=['연간요약','2022년 월별','2023년 월별','2024년 월별'];
 const REQ_ITEMS=['TV광고비','모델비','브랜딩 소계','행사비용','수수료비용','판촉물구입비용','유인판촉도급비용','프로모팅 소계','마케팅비용 합계'];
+let pendingFile=null;
 function setupUpload(){
   const zone=document.getElementById('upZone'),inp=document.getElementById('fileInput');
   zone.addEventListener('click',()=>inp.click());
   zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag')});
   zone.addEventListener('dragleave',()=>zone.classList.remove('drag'));
-  zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag');procFile(e.dataTransfer.files[0])});
-  inp.addEventListener('change',()=>procFile(inp.files[0]));
+  zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag');showModal(e.dataTransfer.files[0])});
+  inp.addEventListener('change',()=>{if(inp.files[0])showModal(inp.files[0])});
+}
+function showModal(file){
+  if(!file)return;
+  pendingFile=file;
+  document.getElementById('modalFileName').textContent=file.name;
+  const size=file.size>1024*1024?(file.size/1024/1024).toFixed(1)+' MB':(file.size/1024).toFixed(1)+' KB';
+  document.getElementById('modalFileSize').textContent=size;
+  document.getElementById('modalBackdrop').classList.add('open');
+}
+function closeModal(){
+  document.getElementById('modalBackdrop').classList.remove('open');
+  document.getElementById('fileInput').value='';
+  pendingFile=null;
+}
+function confirmUpload(){
+  document.getElementById('modalBackdrop').classList.remove('open');
+  if(pendingFile)procFile(pendingFile);
+  pendingFile=null;
 }
 function showErr(msgs){
   document.getElementById('okBox').style.display='none';
@@ -886,5 +954,25 @@ function procFile(file){
 setupUpload();
 renderSummary();
 </script>
+<!-- ══ UPLOAD CONFIRM MODAL ══ -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal">
+    <div class="modal-icon"><i class="ti ti-file-spreadsheet" aria-hidden="true"></i></div>
+    <div class="modal-title">이 파일을 업로드할까요?</div>
+    <div class="modal-sub">업로드하면 대시보드 데이터가 갱신됩니다.</div>
+    <div class="modal-file">
+      <i class="ti ti-file-spreadsheet" aria-hidden="true"></i>
+      <div>
+        <div class="modal-file-name" id="modalFileName">파일명.xlsx</div>
+        <div class="modal-file-size" id="modalFileSize"></div>
+      </div>
+    </div>
+    <div class="modal-btns">
+      <button class="modal-btn-cancel" onclick="closeModal()">취소</button>
+      <button class="modal-btn-ok" onclick="confirmUpload()">업로드 확인</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
