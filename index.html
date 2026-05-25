@@ -85,9 +85,16 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:var
 /* ── Insight strip ── */
 .insight-strip{margin-bottom:22px}
 .ins-cards-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.ins-card{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rad);overflow:hidden;cursor:pointer;transition:border-color .15s}
+.ins-card{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rad);overflow:hidden;cursor:default;transition:border-color .15s}
 .ins-card:hover{border-color:var(--pri-l)}
 .ins-card.selected{border-color:var(--pri);border-width:1.5px}
+.ins-more{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;border-top:1px solid var(--bdr);background:var(--sur2);cursor:pointer;user-select:none;transition:background .12s}
+.ins-more:hover{background:var(--pri-xl)}
+.ins-more-label{font-size:10px;color:var(--t3);font-weight:500}
+.ins-more i{font-size:13px;color:var(--t3);transition:transform .2s}
+.ins-card.selected .ins-more{background:var(--pri-xl)}
+.ins-card.selected .ins-more-label{color:var(--pri)}
+.ins-card.selected .ins-more i{color:var(--pri);transform:rotate(180deg)}
 .ins-head{display:flex;align-items:center;gap:8px;padding:12px 14px 8px}
 .ins-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .dot-green{background:var(--up)}
@@ -624,6 +631,10 @@ function renderInsights(){
       <div class="ins-body-top">
         <div class="ins-title">${c.title}</div>
         <div class="ins-num">${c.num}</div>
+      </div>
+      <div class="ins-more">
+        <span class="ins-more-label">자세히 보기</span>
+        <i class="ti ti-chevron-down" aria-hidden="true"></i>
       </div>`;
     card.addEventListener('click',()=>openInsPanel(i));
     row.appendChild(card);
@@ -635,7 +646,11 @@ function openInsPanel(i){
   if(!c)return;
   if(curInsIdx===i){closeInsPanel();return;}
   curInsIdx=i;
-  document.querySelectorAll('.ins-card').forEach((el,idx)=>el.classList.toggle('selected',idx===i));
+  document.querySelectorAll('.ins-card').forEach((el,idx)=>{
+    el.classList.toggle('selected',idx===i);
+    const lbl=el.querySelector('.ins-more-label');
+    if(lbl)lbl.textContent=idx===i?'접기':'자세히 보기';
+  });
   document.getElementById('panelDot').className='ins-dot '+c.dot;
   document.getElementById('panelTitle').textContent=c.title;
   document.getElementById('panelNum').textContent=c.num;
@@ -645,7 +660,11 @@ function openInsPanel(i){
 }
 function closeInsPanel(){
   curInsIdx=null;
-  document.querySelectorAll('.ins-card').forEach(el=>el.classList.remove('selected'));
+  document.querySelectorAll('.ins-card').forEach(el=>{
+    el.classList.remove('selected');
+    const lbl=el.querySelector('.ins-more-label');
+    if(lbl)lbl.textContent='자세히 보기';
+  });
   document.getElementById('insDetailPanel').classList.remove('open');
 }
 
